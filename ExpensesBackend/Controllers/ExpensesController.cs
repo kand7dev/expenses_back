@@ -13,6 +13,19 @@ namespace ExpensesBackend.Controllers
 
         [HttpGet]
         public IActionResult GetExpenses() => Ok(_expensesServices.GetExpenses());
+        [HttpGet("{id}", Name = "GetExpense")]
+        public IActionResult GetExpense(int id)
+        {
+            var result = _expensesServices.GetExpense(id);
+            if (result is not null)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
 
     }
 }
