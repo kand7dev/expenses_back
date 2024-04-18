@@ -1,3 +1,4 @@
+using ExpensesCore;
 using ExpensesDb;
 using Microsoft.EntityFrameworkCore;
 
@@ -5,9 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-var connectionString = builder.Configuration.GetConnectionString("ProductionConnection");
+var connectionString = builder.Configuration.GetConnectionString("LocalConnection");
 builder.Services.AddDbContext<ExpenseDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddDbContext<ExpenseDbContext>();
+builder.Services.AddTransient<IExpensesServices, ExpensesServices>();
 
 var app = builder.Build();
 
