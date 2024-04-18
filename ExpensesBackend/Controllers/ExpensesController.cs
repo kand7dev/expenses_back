@@ -1,4 +1,5 @@
 using ExpensesCore;
+using ExpensesDb;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExpensesBackend.Controllers
@@ -26,6 +27,15 @@ namespace ExpensesBackend.Controllers
                 return NotFound();
             }
         }
+        [HttpPost]
+        public IActionResult CreateExpense(Expense expense)
+        {
+            var createdExpense = _expensesServices.CreateExpense(expense);
+            return CreatedAtRoute("GetExpense", new {createdExpense.Id}, createdExpense);
+        }
+       
+
+        
 
     }
 }
