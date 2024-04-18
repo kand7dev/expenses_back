@@ -33,6 +33,12 @@ namespace ExpensesBackend.Controllers
             var createdExpense = _expensesServices.CreateExpense(expense);
             return CreatedAtRoute("GetExpense", new {createdExpense.Id}, createdExpense);
         }
+        [HttpDelete]
+        public IActionResult DeleteExpense(Expense expense)
+        {
+            var result = _expensesServices.DeleteExpense(expense);
+            return result ? Ok() : NotFound();
+        }
        
 
         
