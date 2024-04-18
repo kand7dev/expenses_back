@@ -1,5 +1,6 @@
 using ExpensesCore;
 using ExpensesDb;
+using Microsoft.AspNet.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,11 +11,11 @@ builder.Services.AddControllers();
 // Add DbContext with connection string
 var connectionString = builder.Configuration.GetConnectionString("LocalConnection");
 builder.Services.AddDbContext<ExpenseDbContext>(options => options.UseSqlServer(connectionString));
-builder.Services.AddDbContext<ExpenseDbContext>();
 
 // Add ExpensesCore services
 builder.Services.AddTransient<IExpensesServices, ExpensesServices>();
-
+builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
 // Add Swagger
 builder.Services.AddSwaggerDocument(settings =>
 {
