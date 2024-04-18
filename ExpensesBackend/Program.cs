@@ -4,12 +4,23 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add default services to the container.
 builder.Services.AddControllers();
+
+// Add DbContext with connection string
 var connectionString = builder.Configuration.GetConnectionString("LocalConnection");
 builder.Services.AddDbContext<ExpenseDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddDbContext<ExpenseDbContext>();
+
+// Add ExpensesCore services
 builder.Services.AddTransient<IExpensesServices, ExpensesServices>();
+
+// Add Swagger
+
+builder.Services.AddSwaggerDocument(settings =>
+{
+    settings.Title = "Expenses";
+});
 
 var app = builder.Build();
 
@@ -20,5 +31,9 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseOpenApi();
+
+app.UseSwaggerUi();
 
 app.Run();
