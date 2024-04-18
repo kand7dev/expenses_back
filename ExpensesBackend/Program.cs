@@ -16,10 +16,18 @@ builder.Services.AddDbContext<ExpenseDbContext>();
 builder.Services.AddTransient<IExpensesServices, ExpensesServices>();
 
 // Add Swagger
-
 builder.Services.AddSwaggerDocument(settings =>
 {
     settings.Title = "Expenses";
+});
+
+// Add Policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ExpensesPolicy", builder =>
+    {
+        builder.WithOrigins("*").AllowAnyHeader().AllowAnyMethod();
+    });
 });
 
 var app = builder.Build();
@@ -31,6 +39,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors("ExpensesPolicy");
 
 app.UseOpenApi();
 
