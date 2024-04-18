@@ -44,5 +44,21 @@ namespace ExpensesCore
                 return false;
             }
         }
+
+        public Expense? EditExpense(Expense expense)
+        {
+            try
+            {
+                var dbExpense = _context.Expenses.First(e => e.Id == expense.Id);
+                dbExpense.Description = expense.Description;
+                dbExpense.Amount = expense.Amount;
+                _context.SaveChanges();
+                return dbExpense;
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }
