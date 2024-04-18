@@ -13,5 +13,6 @@ namespace ExpensesCore
         Expense? GetExpense(int id);
         Expense CreateExpense(Expense expense);
         bool DeleteExpense(Expense expense);
+        Expense? EditExpense(Expense expense);
     }
 }
