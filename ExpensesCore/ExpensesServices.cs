@@ -3,24 +3,26 @@ using Microsoft.Identity.Client;
 
 namespace ExpensesCore
 {
-    public class ExpensesServices: IExpensesServices
+    public class ExpensesServices : IExpensesServices
     {
         private ExpenseDbContext _context;
         public ExpensesServices(ExpenseDbContext context) => _context = context;
-        public Expense? GetExpense(int id) {
+        public Expense? GetExpense(int id)
+        {
             Expense? expenseById = null;
 
-            try {
+            try
+            {
                 expenseById = _context.Expenses.First(e => e.Id == id);
                 return expenseById;
             }
             catch
             {
-                
+
                 return null;
             }
 
-        }          
+        }
         public List<Expense> GetExpenses() => _context.Expenses.ToList();
         public Expense CreateExpense(Expense expense)
         {
@@ -29,5 +31,18 @@ namespace ExpensesCore
             return expense;
         }
 
+        public bool DeleteExpense(Expense expense)
+        {
+            _context.Remove(expense);
+            try
+            {
+                _context.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
