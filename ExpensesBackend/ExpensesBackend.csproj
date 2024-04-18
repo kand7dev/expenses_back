@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ExpensesCore\ExpensesCore.csproj" />
     <ProjectReference Include="..\ExpensesDb\ExpensesDb.csproj" />
   </ItemGroup>
 
