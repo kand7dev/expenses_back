@@ -5,7 +5,9 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "JWT_SECRET": "This is my secret key which must be long enough",
+        "JWT_ISSUER": "My expenses API"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5110"
