@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ExpensesDb
 {
@@ -9,6 +10,8 @@ namespace ExpensesDb
         public string? Description { get; set; }
         public double Amount { get; set; }
 
+        [ForeignKey("UserId")]
+        public User? User { get; set; }
 
     }
 }
