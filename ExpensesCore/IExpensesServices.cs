@@ -10,5 +10,8 @@ namespace ExpensesCore
     public interface IExpensesServices
     {
         List<Expense> GetExpenses();
+        Expense? GetExpense(int id);
+        
+       
     }
 }
