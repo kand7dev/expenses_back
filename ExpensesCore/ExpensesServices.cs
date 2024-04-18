@@ -1,4 +1,5 @@
 ﻿using ExpensesDb;
+using Microsoft.Identity.Client;
 
 namespace ExpensesCore
 {
@@ -6,6 +7,21 @@ namespace ExpensesCore
     {
         private ExpenseDbContext _context;
         public ExpensesServices(ExpenseDbContext context) => _context = context;
+
+        public Expense? GetExpense(int id) {
+            Expense? expenseById = null;
+
+            try {
+                expenseById = _context.Expenses.First(e => e.Id == id);
+                return expenseById;
+            }
+            catch
+            {
+                
+                return null;
+            }
+
+        }          
 
         public List<Expense> GetExpenses() => _context.Expenses.ToList();
     }
