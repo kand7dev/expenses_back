@@ -39,7 +39,19 @@ namespace ExpensesBackend.Controllers
             var result = _expensesServices.DeleteExpense(expense);
             return result ? Ok() : NotFound();
         }
-       
+        [HttpPut]
+        public IActionResult EditExpense(Expense expense)
+        {
+            var result = _expensesServices.EditExpense(expense);
+            if (result is not null)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
 
         
 
