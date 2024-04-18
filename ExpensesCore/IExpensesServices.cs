@@ -11,7 +11,7 @@ namespace ExpensesCore
     {
         List<Expense> GetExpenses();
         Expense? GetExpense(int id);
-        
+        Expense CreateExpense(Expense expense);
        
     }
 }

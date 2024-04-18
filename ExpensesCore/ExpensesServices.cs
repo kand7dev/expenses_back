@@ -7,7 +7,6 @@ namespace ExpensesCore
     {
         private ExpenseDbContext _context;
         public ExpensesServices(ExpenseDbContext context) => _context = context;
-
         public Expense? GetExpense(int id) {
             Expense? expenseById = null;
 
@@ -22,7 +21,13 @@ namespace ExpensesCore
             }
 
         }          
-
         public List<Expense> GetExpenses() => _context.Expenses.ToList();
+        public Expense CreateExpense(Expense expense)
+        {
+            _context.Add(expense);
+            _context.SaveChanges();
+            return expense;
+        }
+
     }
 }
