@@ -19,6 +19,7 @@ builder.Services.AddDbContext<ExpenseDbContext>(options => options.UseSqlServer(
 builder.Services.AddTransient<IExpensesServices, ExpensesServices>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
+builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 // Add Swagger
 builder.Services.AddSwaggerDocument(settings =>
 {
