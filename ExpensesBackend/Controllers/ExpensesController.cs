@@ -1,5 +1,5 @@
 using ExpensesCore;
-using ExpensesDb;
+using ExpensesCore.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +30,7 @@ namespace ExpensesBackend.Controllers
             }
         }
         [HttpPost]
-        public IActionResult CreateExpense(Expense expense)
+        public IActionResult CreateExpense(ExpensesDb.Expense expense)
         {
             var createdExpense = _expensesServices.CreateExpense(expense);
             return CreatedAtRoute("GetExpense", new {createdExpense.Id}, createdExpense);
