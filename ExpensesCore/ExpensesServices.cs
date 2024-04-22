@@ -1,38 +1,30 @@
-﻿using ExpensesDb;
-using Microsoft.Identity.Client;
+﻿using ExpensesCore.DTO;
+using Microsoft.AspNetCore.Http;
 
 namespace ExpensesCore
 {
     public class ExpensesServices : IExpensesServices
     {
-        private ExpenseDbContext _context;
-        public ExpensesServices(ExpenseDbContext context) => _context = context;
-        public Expense? GetExpense(int id)
+        private ExpensesDb.ExpenseDbContext _context;
+        private readonly ExpensesDb.User _user;
+        public ExpensesServices(ExpensesDb.ExpenseDbContext context, IHttpContextAccessor httpContextAccessor )
         {
-            Expense? expenseById = null;
-
-            try
-            {
-                expenseById = _context.Expenses.First(e => e.Id == id);
-                return expenseById;
-            }
-            catch
-            {
-
-                return null;
-            }
-
+            _context = context;
+            _user = _context.Users.First(u => u.Username == httpContextAccessor.HttpContext.User.Identity!.Name);
         }
-        public List<Expense> GetExpenses() => _context.Expenses.ToList();
-        public Expense CreateExpense(Expense expense)
+        public Expense GetExpense(int id) => _context.Expenses.Where(e => e.User.Id == _user.Id && e.Id == id).Select(e => (Expense)e).First();
+        public List<Expense> GetExpenses() => [.. _context.Expenses.Where(e => e.User.Id == _user.Id).Select(e => (Expense)e)];
+        public ExpensesCore.DTO.Expense CreateExpense(ExpensesDb.Expense expense)
         {
+            expense.User = _user;
             _context.Add(expense);
             _context.SaveChanges();
-            return expense;
+            return (Expense)expense;
         }
 
         public bool DeleteExpense(Expense expense)
         {
+            var dbExpense = _context.Expenses.First(e => e.User.Id == _user.Id && e.Id == expense.Id);
             _context.Remove(expense);
             try
             {
@@ -45,19 +37,19 @@ namespace ExpensesCore
             }
         }
 
-        public Expense? EditExpense(Expense expense)
+        public Expense EditExpense(Expense expense)
         {
             try
             {
-                var dbExpense = _context.Expenses.First(e => e.Id == expense.Id);
+                var dbExpense = _context.Expenses.First(e => e.User.Id == _user.Id && e.Id == expense.Id);
                 dbExpense.Description = expense.Description;
                 dbExpense.Amount = expense.Amount;
                 _context.SaveChanges();
-                return dbExpense;
+                return expense;
             }
             catch
             {
-                return null;
+                return null!;
             }
         }
     }

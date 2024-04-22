@@ -1,10 +1,12 @@
 using ExpensesCore;
 using ExpensesDb;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+
 using System.Text;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +20,7 @@ builder.Services.AddDbContext<ExpenseDbContext>(options => options.UseSqlServer(
 // Add ExpensesCore services
 builder.Services.AddTransient<IExpensesServices, ExpensesServices>();
 builder.Services.AddTransient<IUserService, UserService>();
-builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
+builder.Services.AddTransient<Microsoft.AspNetCore.Identity.IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 // Add Swagger
 builder.Services.AddSwaggerDocument(settings =>
@@ -48,7 +50,7 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = issuer,
         ValidateAudience = false,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret!))
     };
 });
 var app = builder.Build();
