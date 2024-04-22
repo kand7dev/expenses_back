@@ -2,7 +2,7 @@
 using ExpensesCore.DTO;
 using ExpensesCore.Utilities;
 using ExpensesDb;
-using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,9 +15,9 @@ namespace ExpensesCore
     public class UserService: IUserService
     {
         private readonly ExpenseDbContext _context;
-        private readonly IPasswordHasher _passwordHasher;
+        private readonly IPasswordHasher<User> _passwordHasher;
 
-        public UserService(ExpenseDbContext context, IPasswordHasher passwordHasher)
+        public UserService(ExpenseDbContext context, IPasswordHasher<User> passwordHasher)
         {
             _context = context;
             _passwordHasher = passwordHasher;
@@ -26,7 +26,7 @@ namespace ExpensesCore
         public async Task<AuthenticatedUser> SignIn(User user)
         {
             var dbUser = await _context.Users.FirstOrDefaultAsync(u => u.Username == user.Username);
-            if (dbUser is null || _passwordHasher.VerifyHashedPassword(dbUser.Password, user.Password) == PasswordVerificationResult.Failed)
+            if (dbUser is null || _passwordHasher.VerifyHashedPassword(user, dbUser.Password, user.Password) == Microsoft.AspNetCore.Identity.PasswordVerificationResult.Failed)
             {
                 throw new InvalidUsernamePasswordException("Invalid username or password");
             }
@@ -45,7 +45,7 @@ namespace ExpensesCore
             {
                 throw new UsernameAlreadyExistsException("Username already exists");
             }
-            user.Password = _passwordHasher.HashPassword(user.Password);
+            user.Password = _passwordHasher.HashPassword(user, user.Password);
             await _context.AddAsync(user);
             await _context.SaveChangesAsync();
 
