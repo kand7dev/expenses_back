@@ -7,8 +7,8 @@ namespace ExpensesDb
     {
         [Key]
         public int Id { get; set; }
-        public required string Description { get; set; }
-        public double Amount { get; set; }
+        public string? Description { get; set; }
+        public double? Amount { get; set; }
         [ForeignKey("FK_UserId")]
         public required User User { get; set; }
 
