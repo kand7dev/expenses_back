@@ -10,7 +10,7 @@ namespace ExpensesBackend.Controllers
     [Route("[controller]")]
     public class ExpensesController : ControllerBase
     {
-        private IExpensesServices _expensesServices;
+        private readonly IExpensesServices _expensesServices;
         public ExpensesController(IExpensesServices expensesServices) => _expensesServices = expensesServices;
 
 
