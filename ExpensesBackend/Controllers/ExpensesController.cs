@@ -1,6 +1,8 @@
 using ExpensesCore;
+using ExpensesCore.CustomExceptions;
 using ExpensesCore.DTO;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExpensesBackend.Controllers
@@ -19,12 +21,12 @@ namespace ExpensesBackend.Controllers
         [HttpGet("{id}", Name = "GetExpense")]
         public IActionResult GetExpense(int id)
         {
-            var result = _expensesServices.GetExpense(id);
-            if (result is not null)
+            try
             {
+                var result = _expensesServices.GetExpense(id);
                 return Ok(result);
             }
-            else
+            catch (NotFoundException)
             {
                 return NotFound();
             }
@@ -33,13 +35,20 @@ namespace ExpensesBackend.Controllers
         public IActionResult CreateExpense(ExpensesDb.Expense expense)
         {
             var createdExpense = _expensesServices.CreateExpense(expense);
-            return CreatedAtRoute("GetExpense", new {createdExpense.Id}, createdExpense);
+            return CreatedAtRoute("GetExpense", new { createdExpense.Id }, createdExpense);
         }
         [HttpDelete]
         public IActionResult DeleteExpense(Expense expense)
         {
-            var result = _expensesServices.DeleteExpense(expense);
-            return result ? Ok() : NotFound();
+            try
+            {
+                var result = _expensesServices.DeleteExpense(expense);
+                return Ok(result);
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
         }
         [HttpPut]
         public IActionResult EditExpense(Expense expense)
@@ -55,7 +64,7 @@ namespace ExpensesBackend.Controllers
             }
         }
 
-        
+
 
     }
 }
