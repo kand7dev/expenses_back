@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExpensesDb.Migrations
 {
     [DbContext(typeof(ExpenseDbContext))]
-    [Migration("20240422221542_FinalMigrationsNullable")]
-    partial class FinalMigrationsNullable
+    [Migration("20240423154006_LatestProduction")]
+    partial class LatestProduction
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,7 +39,7 @@ namespace ExpensesDb.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FK_UserId")
+                    b.Property<int?>("FK_UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -75,9 +75,7 @@ namespace ExpensesDb.Migrations
                 {
                     b.HasOne("ExpensesDb.User", "User")
                         .WithMany()
-                        .HasForeignKey("FK_UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FK_UserId");
 
                     b.Navigation("User");
                 });

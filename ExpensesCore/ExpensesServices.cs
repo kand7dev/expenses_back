@@ -37,11 +37,11 @@ namespace ExpensesCore
         public Expense DeleteExpense(Expense expense)
         {
             var dbExpense = _context.Expenses.First(e => e.User.Id == _user.Id && e.Id == expense.Id);
-            _context.Remove(expense);
+            _context.Remove(dbExpense);
             try
             {
                 _context.SaveChanges();
-                return (Expense)expense;
+                return (Expense)dbExpense;
             }
             catch
             {

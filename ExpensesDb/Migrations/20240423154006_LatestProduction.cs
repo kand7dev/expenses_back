@@ -5,7 +5,7 @@
 namespace ExpensesDb.Migrations
 {
     /// <inheritdoc />
-    public partial class FinalMigrationsNullable : Migration
+    public partial class LatestProduction : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,7 +33,7 @@ namespace ExpensesDb.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Amount = table.Column<double>(type: "float", nullable: true),
-                    FK_UserId = table.Column<int>(type: "int", nullable: false)
+                    FK_UserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -42,8 +42,7 @@ namespace ExpensesDb.Migrations
                         name: "FK_Expenses_Users_FK_UserId",
                         column: x => x.FK_UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
