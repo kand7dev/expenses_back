@@ -34,18 +34,18 @@ namespace ExpensesCore
             return (Expense)expense;
         }
 
-        public bool DeleteExpense(Expense expense)
+        public Expense DeleteExpense(Expense expense)
         {
             var dbExpense = _context.Expenses.First(e => e.User.Id == _user.Id && e.Id == expense.Id);
             _context.Remove(expense);
             try
             {
                 _context.SaveChanges();
-                return true;
+                return (Expense)expense;
             }
             catch
             {
-                return false;
+                throw new NotFoundException();
             }
         }
 
