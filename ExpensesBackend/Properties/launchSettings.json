@@ -18,7 +18,10 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "JWT_SECRET": "This is my secret key which must be long enough",
+        "JWT_ISSUER": "My expenses API",
+        "CLIENT_ID": "922646995997-cvnpmcljlas2ns7052qrr5ogqqubhuol.apps.googleusercontent.com"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7263;http://localhost:5110"
@@ -28,7 +31,10 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "JWT_SECRET": "This is my secret key which must be long enough",
+        "JWT_ISSUER": "My expenses API",
+        "CLIENT_ID": "922646995997-cvnpmcljlas2ns7052qrr5ogqqubhuol.apps.googleusercontent.com"
       }
     },
     "Container (Dockerfile)": {
