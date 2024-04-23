@@ -10,7 +10,7 @@ namespace ExpensesDb
         public string? Description { get; set; }
         public double? Amount { get; set; }
         [ForeignKey("FK_UserId")]
-        public required User User { get; set; }
+        public User? User { get; set; }
 
     }
 }
