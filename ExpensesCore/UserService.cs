@@ -26,7 +26,7 @@ namespace ExpensesCore
         public async Task<AuthenticatedUser> SignIn(User user)
         {
             var dbUser = await _context.Users.FirstOrDefaultAsync(u => u.Username == user.Username);
-            if (dbUser is null)
+            if (dbUser is null || dbUser.Password is null)
             {
                    throw new InvalidUsernamePasswordException("Invalid username or password");
             }
@@ -55,21 +55,47 @@ namespace ExpensesCore
             {
                 throw new UsernameAlreadyExistsException("Username already exists");
             }
-            if (user is not null && user.Password is not null && user.Username is not null) {
-                user.Password = _passwordHasher.HashPassword(user, user.Password);
-                await _context.AddAsync(user);
-                await _context.SaveChangesAsync();
-                return new AuthenticatedUser
-                {
-                    Username = user.Username!,
-                    Token = JwtGenerator.GenerateUserToken(user.Username)
-                };
-            }
-            else
+            if (!string.IsNullOrEmpty(user.Password))
             {
-                throw new Exception("Error");
+                if (user is not null && user.Password is not null && user.Username is not null)
+                {
+                    user.Password = _passwordHasher.HashPassword(user, user.Password);
+                }
             }
+            await _context!.AddAsync(user!);
+            await _context.SaveChangesAsync();
+            return new AuthenticatedUser
+            {
+                Username = user!.Username!,
+                Token = JwtGenerator.GenerateUserToken(user.Username!)
+            };
  
+        }
+        public async Task<AuthenticatedUser> ExternalSignIn(User user)
+        {
+            var dbUser = await _context.Users.FirstOrDefaultAsync(u => u.ExternalId!.Equals(user.ExternalId) && u.ExternalType!.Equals(user.ExternalType));
+            if (dbUser is null)
+            {
+                user.Username = CreateUniqueUsernameFromEmail(user.Email);
+                return await SignUp(user);
+            }
+            return new AuthenticatedUser
+            {
+                Username = dbUser.Username!,
+                Token = JwtGenerator.GenerateUserToken(dbUser.Username!)
+            };
+        }
+
+        private string? CreateUniqueUsernameFromEmail(string? email)
+        {
+            var emailSplit = email!.Split("@").First();
+            var random = new Random();
+            var username = emailSplit;
+            while (_context.Users.Any(u => u.Username == username))
+            {
+                username = emailSplit + random.Next(1000, 9999);
+            }
+            return username;
         }
     }
 }
