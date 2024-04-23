@@ -17,7 +17,7 @@ namespace ExpensesCore
         {
             try
             {
-                var expense = _context.Expenses.Where(e => e.User.Id == _user.Id && e.Id == id).Select(e => (Expense)e).First();
+                var expense = _context.Expenses.Where(e => e.User!.Id == _user.Id && e.Id == id).Select(e => (Expense)e).First();
                 return expense;
             }
             catch
@@ -25,7 +25,7 @@ namespace ExpensesCore
                 throw new NotFoundException();
             }
         }
-        public List<Expense> GetExpenses() => [.. _context.Expenses.Where(e => e.User.Id == _user.Id).Select(e => (Expense)e)];
+        public List<Expense> GetExpenses() => [.. _context.Expenses.Where(e => e.User!.Id == _user.Id).Select(e => (Expense)e)];
         public ExpensesCore.DTO.Expense CreateExpense(ExpensesDb.Expense expense)
         {
             expense.User = _user;
@@ -36,7 +36,7 @@ namespace ExpensesCore
 
         public Expense DeleteExpense(Expense expense)
         {
-            var dbExpense = _context.Expenses.First(e => e.User.Id == _user.Id && e.Id == expense.Id);
+            var dbExpense = _context.Expenses.First(e => e.User!.Id == _user.Id && e.Id == expense.Id);
             _context.Remove(dbExpense);
             try
             {
@@ -53,7 +53,7 @@ namespace ExpensesCore
         {
             try
             {
-                var dbExpense = _context.Expenses.First(e => e.User.Id == _user.Id && e.Id == expense.Id);
+                var dbExpense = _context.Expenses.First(e => e.User!.Id == _user.Id && e.Id == expense.Id);
                 dbExpense.Description = expense.Description;
                 dbExpense.Amount = expense.Amount;
                 _context.SaveChanges();
