@@ -36,7 +36,7 @@ namespace ExpensesDb.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FK_UserId")
+                    b.Property<int?>("FK_UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -72,9 +72,7 @@ namespace ExpensesDb.Migrations
                 {
                     b.HasOne("ExpensesDb.User", "User")
                         .WithMany()
-                        .HasForeignKey("FK_UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FK_UserId");
 
                     b.Navigation("User");
                 });
