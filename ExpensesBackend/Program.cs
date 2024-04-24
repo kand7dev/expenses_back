@@ -13,8 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Add DbContext with connection string
-var connectionString = builder.Configuration.GetConnectionString("LocalConnection");
-builder.Services.AddDbContext<ExpenseDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<ExpenseDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DB_CONNECTION_STRING")));
 
 // Add Statistics Services
 builder.Services.AddTransient<IStatisticsServices, StatisticsServices>();
@@ -74,5 +73,9 @@ app.UseCors("ExpensesPolicy");
 app.UseOpenApi();
 
 app.UseSwaggerUi();
+
+using var scope = app.Services.CreateScope();
+await using var context = scope.ServiceProvider.GetRequiredService<ExpenseDbContext>();
+await context.Database.MigrateAsync();
 
 app.Run();
