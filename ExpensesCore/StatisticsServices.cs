@@ -1,6 +1,5 @@
-﻿
-using Microsoft.AspNetCore.Http;
 
+using Microsoft.AspNetCore.Http;
 namespace ExpensesCore
 {
     public class StatisticsServices : IStatisticsServices
