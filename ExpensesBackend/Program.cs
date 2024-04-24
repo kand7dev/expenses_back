@@ -17,6 +17,9 @@ builder.Services.AddControllers();
 var connectionString = builder.Configuration.GetConnectionString("LocalConnection");
 builder.Services.AddDbContext<ExpenseDbContext>(options => options.UseSqlServer(connectionString));
 
+// Add Statistics Services
+builder.Services.AddTransient<IStatisticsServices, StatisticsServices>();
+
 // Add ExpensesCore services
 builder.Services.AddTransient<IExpensesServices, ExpensesServices>();
 builder.Services.AddTransient<IUserService, UserService>();
