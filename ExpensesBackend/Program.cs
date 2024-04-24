@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-
 using System.Text;
 
 
@@ -25,6 +24,8 @@ builder.Services.AddTransient<IExpensesServices, ExpensesServices>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<Microsoft.AspNetCore.Identity.IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddTransient<IStatisticsServices, StatisticsServices>();
+
 // Add Swagger
 builder.Services.AddSwaggerDocument(settings =>
 {

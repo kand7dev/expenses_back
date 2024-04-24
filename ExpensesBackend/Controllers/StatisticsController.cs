@@ -10,12 +10,10 @@ namespace ExpensesBackend.Controllers
     public class StatisticsController : ControllerBase
     {
         private readonly IStatisticsServices _statisticsServices;
-        
         public StatisticsController(IStatisticsServices statisticsServices)
         {
             _statisticsServices = statisticsServices;
         }
-
         [HttpGet]
         public IActionResult GetExpenseAmountPerCategory()
         {

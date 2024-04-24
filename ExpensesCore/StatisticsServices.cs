@@ -1,10 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Http;
 namespace ExpensesCore
 {
     public class StatisticsServices : IStatisticsServices
@@ -15,15 +10,11 @@ namespace ExpensesCore
         public StatisticsServices(ExpensesDb.ExpenseDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
-            _user = _context.Users
-                .First(u => u.Username == httpContextAccessor.HttpContext.User.Identity.Name);
+            _user = _context.Users.First(u => u.Username == httpContextAccessor.HttpContext.User.Identity!.Name);
         }
-        public IEnumerable<KeyValuePair<string, double>> GetExpenseAmountPerCategory() =>
-            _context.Expenses
-            .Where(e => e.User.Id == _user.Id)
-            .AsEnumerable()
-            .GroupBy(e => e.Description)
-            .ToDictionary(e => e.Key, e => e.Sum(x => x.Amount))
-            .Select(x => new KeyValuePair<string, double>(x.Key, (double)x.Value));
+        public IEnumerable<KeyValuePair<string, double?>> GetExpenseAmountPerCategory()
+        {
+            return _context.Expenses.Where(e => e.User!.Id == _user.Id).AsEnumerable().GroupBy(e => e.Description!).ToDictionary(e => e.Key, e => e.Sum(x => x.Amount)).Select(x => new KeyValuePair<string, double?>(x.Key, x.Value));
+        }
     }
 }
