@@ -39,5 +39,4 @@ The constraints we follow are
 2. Navigate to project directory.
 3. Open the solution file 'Expenses.sln' in Visual Studio or your preferred IDE.
 4. Build the solution to restore dependencies and compile the project.
-5. Update your database with the latest migration by running `update-database` in the Nuget Console Package Manager.
-6. Run the application. (Using the play button at the top, but in http not in https mode).
+5. Run the application. (Using the play button at the top).
